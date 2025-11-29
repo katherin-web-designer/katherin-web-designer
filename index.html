@@ -1,496 +1,57 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>WebSpark — Páginas web en 48h | Katherin</title>
-  <meta name="description" content="WebSpark — Páginas web rápidas y profesionales para negocios pequeños. Entrega en 48h. Contacto WhatsApp +1 (239) 832-5390" />
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;800&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
-  <style>
-    :root{
-      --bg: linear-gradient(180deg,#f6fbff,#eef8ff);
-      --accent:#0ea5a4; /* teal */
-      --accent-2:#60a5fa; /* light blue */
-      --dark:#0f1724;
-      --muted:#5b6b7a;
-      --card:#ffffff;
-      --radius:12px;
-      --maxw:1100px;
-      --shadow: 0 10px 30px rgba(10,20,40,0.06);
-    }
-    *{box-sizing:border-box}
-    body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial;background:var(--bg);color:var(--dark);-webkit-font-smoothing:antialiased}
-    .wrap{max-width:var(--maxw);margin:20px auto;padding:18px}
-    header{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:8px 4px;position:sticky;top:10px;background:transparent;z-index:60}
-    .brand{display:flex;gap:12px;align-items:center;text-decoration:none;color:inherit}
-    .logo{width:56px;height:56px;border-radius:12px;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#fff;font-weight:800;font-family:Montserrat;font-size:18px;box-shadow:var(--shadow)}
-    nav{display:flex;gap:10px;align-items:center}
-    nav a{padding:8px 10px;border-radius:8px;text-decoration:none;color:var(--muted);font-weight:600}
-    nav a.active{background:rgba(14,165,164,0.12);color:var(--accent)}
-    .cta{background:var(--accent);color:#fff;padding:9px 14px;border-radius:10px;text-decoration:none}
-    .lang-toggle{display:inline-flex;gap:6px;align-items:center;border-radius:8px;border:1px solid rgba(10,20,40,0.06);padding:6px;background:#fff}
-    .lang-toggle button{border:0;background:transparent;padding:6px 8px;cursor:pointer;font-weight:700}
-    .lang-toggle button.active{background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#fff;border-radius:6px}
-    .hamburger{display:none;width:44px;height:44px;border-radius:9px;align-items:center;justify-content:center;cursor:pointer}
-    .hamburger > div{width:22px;height:2px;background:var(--dark);border-radius:2px;position:relative}
-    .hamburger > div::before,.hamburger > div::after{content:"";position:absolute;left:0;width:22px;height:2px;background:var(--dark);border-radius:2px}
-    .hamburger > div::before{top:-7px} .hamburger > div::after{top:7px}
-
-    .hero{display:grid;grid-template-columns:1fr 380px;gap:18px;align-items:center;margin-top:6px}
-    .card{background:var(--card);padding:20px;border-radius:var(--radius);box-shadow:var(--shadow)}
-    h1{font-family:Montserrat;margin:0 0 8px 0;font-size:28px;color:var(--dark)}
-    p.lead{color:var(--muted);margin:0 0 12px}
-    .btn{cursor:pointer;border:0;padding:10px 14px;border-radius:10px;font-weight:700}
-    .btn-primary{background:var(--accent);color:#fff}
-    .btn-outline{background:transparent;border:2px solid rgba(96,165,250,0.12);color:var(--accent-2)}
-    .badge{display:inline-block;padding:6px 10px;border-radius:999px;background:rgba(14,165,164,0.12);color:var(--accent);font-weight:700}
-
-    section{margin:28px 0}
-    .grid{display:grid;gap:12px;grid-template-columns:repeat(3,1fr)}
-    .service{padding:14px;border-radius:12px;background:var(--card);box-shadow:var(--shadow)}
-    .gallery{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
-    .placeholder{background:linear-gradient(135deg,#eef9ff,#f0fbff);border-radius:10px;min-height:120px;display:flex;align-items:center;justify-content:center;color:var(--muted);font-weight:600;padding:12px;text-align:center}
-
-    .about{display:flex;gap:18px;align-items:flex-start}
-    .profile-logo{width:140px;height:140px;border-radius:14px;background:linear-gradient(135deg,var(--accent-2),#bfe9f8);display:flex;align-items:center;justify-content:center;font-weight:800;color:#fff;font-family:Montserrat;font-size:36px}
-
-    form label{display:block;margin:8px 0 6px;font-weight:700;color:var(--dark)}
-    input,textarea,select{width:100%;padding:10px;border-radius:10px;border:1px solid #eef6fb;background:#fbfeff}
-    textarea{min-height:110px;resize:vertical}
-
-    .modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(11,11,11,0.6);z-index:120;padding:20px}
-    .modal.show{display:flex}
-    .modal-inner{max-width:920px;width:100%;border-radius:12px;overflow:hidden;background:#fff;box-shadow:0 30px 80px rgba(0,0,0,0.5);padding:20px}
-    .to-top{position:fixed;right:18px;bottom:18px;background:var(--accent);color:#fff;padding:12px;border-radius:12px;cursor:pointer;display:none;z-index:150}
-
-    .reveal{opacity:0;transform:translateY(16px);transition:all .55s ease}
-    .reveal.show{opacity:1;transform:none}
-
-    @media (max-width:980px){
-      .hero{grid-template-columns:1fr}
-      .gallery{grid-template-columns:repeat(3,1fr)}
-      nav a{display:none}
-      .hamburger{display:flex}
-    }
-    @media (max-width:560px){
-      .gallery{grid-template-columns:repeat(2,1fr)}
-      .grid{grid-template-columns:1fr}
-    }
-
-    .icon {width:20px;height:20px;vertical-align:middle}
-    .whatsapp-btn {display:inline-flex;gap:8px;align-items:center;padding:8px 12px;border-radius:999px;background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#fff;font-weight:700;text-decoration:none}
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Katherin Web Designer</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <div class="wrap">
+
+    <!-- Botón cambio de idioma -->
+    <button id="language-toggle">EN/ES</button>
+
     <header>
-      <a class="brand" href="#" aria-label="WebSpark - home">
-        <div class="logo" aria-hidden="true">WS</div>
-        <div>
-          <div style="font-weight:800;font-family:Montserrat" data-i18n="brand_title">WebSpark</div>
-          <div style="font-size:12px;color:var(--muted)" data-i18n="brand_sub">Páginas web express para negocios pequeños</div>
-        </div>
-      </a>
-
-      <nav id="mainNav" aria-label="Navegación principal">
-        <a href="#servicios" data-target="servicios" data-i18n="nav_services">Servicios</a>
-        <a href="#ejemplos" data-target="ejemplos" data-i18n="nav_examples">Ejemplos</a>
-        <a href="#sobre" data-target="sobre" data-i18n="nav_about">Sobre</a>
-        <a href="#contacto" class="cta" data-target="contacto" data-i18n="nav_book">Reservar</a>
-      </nav>
-
-      <div style="display:flex;gap:12px;align-items:center">
-        <div class="lang-toggle" role="tablist" aria-label="Idioma">
-          <button id="btnES" class="lang-btn" data-lang="es">ES</button>
-          <button id="btnEN" class="lang-btn" data-lang="en">EN</button>
-        </div>
-
-        <!-- WhatsApp button -->
-        <a class="whatsapp-btn" id="waMain" href="https://wa.me/12398325390" target="_blank" rel="noopener noreferrer" aria-label="Contactar por WhatsApp">
-          <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <path d="M20.52 3.48A11.91 11.91 0 0 0 12 0C5.373 0 .001 5.373 0 12c0 2.11.57 4.07 1.65 5.81L0 24l6.41-1.67A11.94 11.94 0 0 0 12 24c6.627 0 12-5.373 12-12 0-3.2-1.24-6.16-3.48-8.52z" fill="#fff" opacity="0.08"/>
-            <path d="M17.472 14.382c-.297-.15-1.758-.867-2.03-.967-.273-.1-.47-.15-.668.15-.198.297-.767.966-.94 1.164-.173.198-.347.223-.644.074-.297-.15-1.255-.463-2.39-1.477-.884-.788-1.48-1.76-1.653-2.058-.173-.297-.018-.458.13-.607.134-.133.298-.347.447-.52.15-.174.2-.298.3-.497.1-.198.05-.372-.025-.522-.075-.15-.668-1.612-.915-2.207-.242-.579-.487-.5-.668-.51l-.57-.01c-.198 0-.52.074-.792.372-.273.297-1.04 1.016-1.04 2.478 0 1.462 1.065 2.876 1.213 3.074.15.198 2.095 3.2 5.077 4.487 0 0 .295.112.53.168.235.056.454.044.625-.027.17-.07 1.038-.378 1.185-.746.15-.372.15-.69.105-.746-.044-.056-.198-.09-.444-.24z" fill="#fff"/>
-          </svg>
-          <span data-i18n="btn_whatsapp">WhatsApp</span>
-        </a>
-      </div>
+        <h1 id="title">Diseño de Páginas Web para Negocios Pequeños</h1>
+        <p id="subtitle">Soluciones accesibles, profesionales y rápidas</p>
     </header>
 
-    <!-- HERO -->
-    <div class="hero" role="banner">
-      <div class="card reveal">
-        <h1 data-i18n="hero_title">WebSpark — Tu web lista en 48 horas</h1>
-        <p class="lead" data-i18n="hero_lead">Creo páginas web profesionales, rápidas y económicas para <strong>negocios pequeños</strong>. Entrega en <strong>48 h</strong>, listas para usar.</p>
-
-        <div style="display:flex;gap:10px;margin-top:10px;align-items:center">
-          <button class="btn btn-primary" data-scroll="contacto" id="btnReserve" data-i18n="btn_reserve">Reservar (WhatsApp)</button>
-          <a class="btn btn-outline" href="#ejemplos" data-i18n="btn_examples">Ver ejemplos</a>
-        </div>
-
-        <div style="margin-top:14px">
-          <span class="badge" data-i18n="price">$30 - $50</span>
-          <span style="margin-left:10px;color:var(--muted)" data-i18n="tagline">Solo para negocios pequeños · Naples, FL</span>
-        </div>
-      </div>
-
-      <div class="card reveal" aria-hidden="true" style="display:flex;align-items:center;justify-content:center;min-height:180px">
-        <!-- Icon placeholder (no images) -->
-        <svg width="160" height="160" viewBox="0 0 48 48" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
-          <rect x="1" y="6" width="46" height="30" rx="3" fill="#eaf8fb"/>
-          <rect x="6" y="12" width="20" height="2" rx="1" fill="#bfeaf6"/>
-          <rect x="6" y="16" width="36" height="2" rx="1" fill="#bde7fb"/>
-          <rect x="6" y="20" width="28" height="2" rx="1" fill="#9fdcf8"/>
-          <circle cx="38" cy="34" r="6" fill="#60a5fa"/>
-        </svg>
-      </div>
-    </div>
-
-    <!-- SERVICES -->
-    <section id="servicios">
-      <h2 class="reveal" data-i18n="sec_services">Qué ofrezco / What I offer</h2>
-      <div class="grid" style="margin-top:12px">
-        <div class="service reveal">
-          <h3 data-i18n="s1_title">Página básica / Basic site</h3>
-          <p style="color:var(--muted)" data-i18n="s1_desc">Inicio, Servicios, Galería, Contacto y botón directo a WhatsApp. Ideal para salones, tiendas y food trucks.</p>
-        </div>
-        <div class="service reveal">
-          <h3 data-i18n="s2_title">Integración WhatsApp / WhatsApp integration</h3>
-          <p style="color:var(--muted)" data-i18n="s2_desc">Formulario que abre tu chat con todos los datos del cliente ya escritos. Botón directo para contacto inmediato.</p>
-        </div>
-        <div class="service reveal">
-          <h3 data-i18n="s3_title">Publicación y soporte / Publish & Support</h3>
-          <p style="color:var(--muted)" data-i18n="s3_desc">Subo tu web a GitHub Pages o Netlify, configuro dominio y te doy una guía simple para que la gestiones.</p>
-        </div>
-      </div>
+    <section class="about">
+        <h2 id="about-title">¿Quién soy?</h2>
+        <p id="about-text">
+            Soy Katherin, creadora de páginas web rápidas, modernas y perfectas para negocios pequeños.
+            Trabajo con precios accesibles para todos.
+        </p>
     </section>
 
-    <!-- EXAMPLES -->
-    <section id="ejemplos">
-      <h2 class="reveal" data-i18n="sec_examples">Ejemplos de negocios que atiendo</h2>
-      <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:12px">
-        <div class="placeholder" data-i18n="ex1">Salones de belleza</div>
-        <div class="placeholder" data-i18n="ex2">Tacos / Food trucks</div>
-        <div class="placeholder" data-i18n="ex3">Tiendas locales</div>
-        <div class="placeholder" data-i18n="ex4">Barberías</div>
-        <div class="placeholder" data-i18n="ex5">Servicios de limpieza</div>
-        <div class="placeholder" data-i18n="ex6">Fotógrafos / Eventos</div>
-      </div>
+    <section class="services">
+        <h2 id="services-title">Servicios</h2>
+        <ul id="services-list">
+            <li>• Páginas web para peluquerías</li>
+            <li>• Restaurantes pequeños</li>
+            <li>• Limpieza</li>
+            <li>• Uñas / pestañas</li>
+            <li>• Barberos</li>
+            <li>• Tiendas pequeñas</li>
+        </ul>
     </section>
 
-    <!-- ABOUT -->
-    <section id="sobre">
-      <h2 class="reveal" data-i18n="sec_about">Sobre Katherin</h2>
-      <div class="about" style="margin-top:12px">
-        <div class="profile-logo reveal">K</div>
-        <div style="flex:1">
-          <p style="margin-top:0"><strong data-i18n="about_title">Katherin — WebSpark</strong></p>
-          <p style="color:var(--muted)" data-i18n="about_desc">Diseño páginas web rápidas y efectivas para negocios pequeños en Naples, FL. Cobro entre <strong>$30 y $50</strong>, con entrega en <strong>48 horas</strong>. Trabajo práctico, directo y sin complicaciones. Entrego archivos listos para usar y te ayudo a poner la página en línea si lo deseas.</p>
-        </div>
-      </div>
+    <section class="pricing">
+        <h2 id="pricing-title">Precios</h2>
+        <p id="pricing-text">$30 – $50 según la complejidad. Entrega en 48 horas.</p>
     </section>
 
-    <!-- CONTACT -->
-    <section id="contacto">
-      <h2 class="reveal" data-i18n="sec_contact">Contacto / Reserva</h2>
+    <section class="contact">
+        <h2 id="contact-title">Contacto</h2>
+        <p id="contact-text">Envíame un mensaje por WhatsApp para comenzar tu página web.</p>
 
-      <form id="contactForm" class="card reveal" onsubmit="return handleSubmit(event)" style="margin-top:12px">
-        <div style="display:flex;gap:10px;flex-wrap:wrap">
-          <div style="flex:1;min-width:140px">
-            <label for="name" data-i18n="label_name">Nombre / Name</label>
-            <input id="name" name="name" type="text" placeholder="Tu nombre / Your name" required>
-          </div>
-          <div style="flex:1;min-width:140px">
-            <label for="phone" data-i18n="label_phone">Teléfono / Phone</label>
-            <input id="phone" name="phone" type="text" placeholder="+1 555 000 0000">
-          </div>
-        </div>
-
-        <label for="business" data-i18n="label_business">Tipo de negocio / Business type</label>
-        <select id="business" name="business"></select>
-
-        <label for="service" data-i18n="label_service">Servicio deseado / Service requested</label>
-        <input id="service" name="service" type="text" placeholder="Ej. Página básica con WhatsApp / Basic site with WA">
-
-        <label for="message" data-i18n="label_message">Detalles / Message</label>
-        <textarea id="message" name="message" placeholder="Más detalles, fecha preferida, dudas..."></textarea>
-
-        <div style="display:flex;gap:10px;align-items:center;margin-top:12px">
-          <button class="btn btn-primary" type="submit" id="btnSend" data-i18n="btn_send">Enviar / Send</button>
-
-          <a id="waQuick" class="whatsapp-btn" href="https://wa.me/12398325390" target="_blank" rel="noopener noreferrer" aria-label="Contactar por WhatsApp">
-            <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-              <path d="M20.52 3.48A11.91 11.91 0 0 0 12 0C5.373 0 .001 5.373 0 12c0 2.11.57 4.07 1.65 5.81L0 24l6.41-1.67A11.94 11.94 0 0 0 12 24c6.627 0 12-5.373 12-12 0-3.2-1.24-6.16-3.48-8.52z" fill="#fff" opacity="0.08"/>
-              <path d="M17.472 14.382c-.297-.15-1.758-.867-2.03-.967-.273-.1-.47-.15-.668.15-.198.297-.767.966-.94 1.164-.173.198-.347.223-.644.074-.297-.15-1.255-.463-2.39-1.477-.884-.788-1.48-1.76-1.653-2.058-.173-.297-.018-.458.13-.607.134-.133.298-.347.447-.52.15-.174.2-.298.3-.497.1-.198.05-.372-.025-.522-.075-.15-.668-1.612-.915-2.207-.242-.579-.487-.5-.668-.51l-.57-.01c-.198 0-.52.074-.792.372-.273.297-1.04 1.016-1.04 2.478 0 1.462 1.065 2.876 1.213 3.074.15.198 2.095 3.2 5.077 4.487 0 0 .295.112.53.168.235.056.454.044.625-.027.17-.07 1.038-.378 1.185-.746.15-.372.15-.69.105-.746-.044-.056-.198-.09-.444-.24z" fill="#fff"/>
-            </svg>
-            <span data-i18n="btn_whatsapp_short">WhatsApp</span>
-          </a>
-
-          <div style="margin-left:auto;text-align:right">
-            <div style="font-size:13px;color:var(--muted)" data-i18n="owner_info">Katherin · Naples, FL</div>
-            <div style="font-weight:800;color:var(--accent)">+1 (239) 832-5390</div>
-          </div>
-        </div>
-
-        <p id="formMsg" style="margin-top:10px;color:green;display:none"></p>
-      </form>
+        <a id="whatsapp-button"
+           href="https://wa.me/12398325390"
+           target="_blank">
+            💬 WhatsApp
+        </a>
     </section>
 
-    <footer style="text-align:center;margin:18px 0;color:var(--muted)">
-      © <span id="year"></span> WebSpark · Katherin · Naples, FL — <span data-i18n="footer_text">Páginas web para negocios pequeños</span>
-    </footer>
-  </div>
-
-  <button class="to-top" id="toTop" title="Volver arriba">↑</button>
-
-  <script>
-    // ---------- translations ----------
-    const TRANSLATIONS = {
-      es: {
-        brand_title: 'WebSpark',
-        brand_sub: 'Páginas web express para negocios pequeños',
-        nav_services: 'Servicios',
-        nav_examples: 'Ejemplos',
-        nav_about: 'Sobre',
-        nav_book: 'Reservar',
-        btn_whatsapp: 'WhatsApp',
-        hero_title: 'WebSpark — Tu web lista en 48 horas',
-        hero_lead: 'Creo páginas web profesionales, rápidas y económicas para negocios pequeños. Entrega en 48 h, listas para usar.',
-        btn_reserve: 'Reservar (WhatsApp)',
-        btn_examples: 'Ver ejemplos',
-        price: '$30 - $50',
-        tagline: 'Solo para negocios pequeños · Naples, FL',
-        sec_services: 'Qué ofrezco / What I offer',
-        s1_title: 'Página básica / Basic site',
-        s1_desc: 'Inicio, Servicios, Galería, Contacto y botón directo a WhatsApp. Ideal para salones, tiendas y food trucks.',
-        s2_title: 'Integración WhatsApp / WhatsApp integration',
-        s2_desc: 'Formulario que abre tu chat con todos los datos del cliente ya escritos. Botón directo para contacto inmediato.',
-        s3_title: 'Publicación y soporte / Publish & Support',
-        s3_desc: 'Subo tu web a GitHub Pages o Netlify, configuro dominio y te doy una guía simple para que la gestiones.',
-        sec_examples: 'Ejemplos de negocios que atiendo',
-        ex1: 'Salones de belleza',
-        ex2: 'Tacos / Food trucks',
-        ex3: 'Tiendas locales',
-        ex4: 'Barberías',
-        ex5: 'Servicios de limpieza',
-        ex6: 'Fotógrafos / Eventos',
-        sec_about: 'Sobre Katherin',
-        about_title: 'Katherin — WebSpark',
-        about_desc: 'Diseño páginas web rápidas y efectivas para negocios pequeños en Naples, FL. Cobro entre $30 y $50, con entrega en 48 horas. Trabajo práctico, directo y sin complicaciones. Entrego archivos listos para usar y te ayudo a poner la página en línea si lo deseas.',
-        sec_contact: 'Contacto / Reserva',
-        label_name: 'Nombre / Name',
-        label_phone: 'Teléfono / Phone',
-        label_business: 'Tipo de negocio / Business type',
-        label_service: 'Servicio deseado / Service requested',
-        label_message: 'Detalles / Message',
-        btn_send: 'Enviar / Send',
-        btn_whatsapp_short: 'WhatsApp',
-        owner_info: 'Katherin · Naples, FL',
-        footer_text: 'Páginas web para negocios pequeños',
-        // select options
-        opt1: 'Salón / Salon',
-        opt2: 'Restaurante / Restaurant',
-        opt3: 'Tienda / Store',
-        opt4: 'Otro / Other',
-        form_place_name: 'Tu nombre / Your name',
-        form_place_phone: '+1 555 000 0000',
-        form_place_service: 'Ej. Página básica con WhatsApp / Basic site with WA',
-        form_place_message: 'Más detalles, fecha preferida, dudas...'
-      },
-      en: {
-        brand_title: 'WebSpark',
-        brand_sub: 'Express websites for small businesses',
-        nav_services: 'Services',
-        nav_examples: 'Examples',
-        nav_about: 'About',
-        nav_book: 'Book',
-        btn_whatsapp: 'WhatsApp',
-        hero_title: 'WebSpark — Your site ready in 48 hours',
-        hero_lead: 'I build professional, fast and affordable websites for small businesses. Delivered in 48 h, ready to use.',
-        btn_reserve: 'Book (WhatsApp)',
-        btn_examples: 'See examples',
-        price: '$30 - $50',
-        tagline: 'For small businesses only · Naples, FL',
-        sec_services: 'What I offer',
-        s1_title: 'Basic site',
-        s1_desc: 'Home, Services, Gallery, Contact and direct WhatsApp button. Ideal for salons, shops and food trucks.',
-        s2_title: 'WhatsApp integration',
-        s2_desc: 'Form that opens your chat with all client details pre-filled. Direct contact button.',
-        s3_title: 'Publish & Support',
-        s3_desc: 'I publish your site to GitHub Pages or Netlify, set up the domain and give you a simple guide to manage it.',
-        sec_examples: 'Examples of businesses I serve',
-        ex1: 'Beauty salons',
-        ex2: 'Tacos / Food trucks',
-        ex3: 'Local stores',
-        ex4: 'Barbershops',
-        ex5: 'Cleaning services',
-        ex6: 'Photographers / Events',
-        sec_about: 'About Katherin',
-        about_title: 'Katherin — WebSpark',
-        about_desc: 'I design fast and effective websites for small businesses in Naples, FL. I charge between $30 and $50, with 48-hour delivery. Practical, direct and hassle-free work. I deliver ready-to-use files and help you put the site online if needed.',
-        sec_contact: 'Contact / Booking',
-        label_name: 'Name / Nombre',
-        label_phone: 'Phone / Teléfono',
-        label_business: 'Business type / Tipo de negocio',
-        label_service: 'Service requested / Servicio deseado',
-        label_message: 'Details / Detalles',
-        btn_send: 'Send / Enviar',
-        btn_whatsapp_short: 'WhatsApp',
-        owner_info: 'Katherin · Naples, FL',
-        footer_text: 'Websites for small businesses',
-        opt1: 'Salon',
-        opt2: 'Restaurant',
-        opt3: 'Store',
-        opt4: 'Other',
-        form_place_name: 'Your name / Tu nombre',
-        form_place_phone: '+1 555 000 0000',
-        form_place_service: 'E.g. Basic site with WA',
-        form_place_message: 'More details, preferred date, questions...'
-      }
-    };
-
-    // ---------- helper to apply translations ----------
-    function applyTranslations(lang) {
-      // simple keys mapped by data-i18n attribute
-      document.querySelectorAll('[data-i18n]').forEach(el => {
-        const key = el.getAttribute('data-i18n');
-        if(!key) return;
-        const txt = TRANSLATIONS[lang][key];
-        if(typeof txt !== 'undefined') {
-          el.textContent = txt;
-        }
-      });
-
-      // placeholders and select options
-      const nameInput = document.getElementById('name');
-      const phoneInput = document.getElementById('phone');
-      const serviceInput = document.getElementById('service');
-      const messageInput = document.getElementById('message');
-      nameInput.placeholder = TRANSLATIONS[lang].form_place_name || '';
-      phoneInput.placeholder = TRANSLATIONS[lang].form_place_phone || '';
-      serviceInput.placeholder = TRANSLATIONS[lang].form_place_service || '';
-      messageInput.placeholder = TRANSLATIONS[lang].form_place_message || '';
-
-      // rebuild select options
-      const business = document.getElementById('business');
-      business.innerHTML = '';
-      const opts = [
-        {val:'Salon', text: TRANSLATIONS[lang].opt1 || 'Salon'},
-        {val:'Restaurant', text: TRANSLATIONS[lang].opt2 || 'Restaurant'},
-        {val:'Store', text: TRANSLATIONS[lang].opt3 || 'Store'},
-        {val:'Other', text: TRANSLATIONS[lang].opt4 || 'Other'}
-      ];
-      opts.forEach(o=>{
-        const option = document.createElement('option');
-        option.value = o.val;
-        option.textContent = o.text;
-        business.appendChild(option);
-      });
-
-      // Update active class on language buttons
-      document.querySelectorAll('.lang-btn').forEach(b => {
-        b.classList.toggle('active', b.getAttribute('data-lang') === lang);
-      });
-    }
-
-    // ---------- language init ----------
-    const savedLang = localStorage.getItem('ws_lang') || 'es';
-    applyTranslations(savedLang);
-
-    document.getElementById('btnES').addEventListener('click', () => {
-      applyTranslations('es');
-      localStorage.setItem('ws_lang','es');
-    });
-    document.getElementById('btnEN').addEventListener('click', () => {
-      applyTranslations('en');
-      localStorage.setItem('ws_lang','en');
-    });
-
-    // ---------- smooth scroll ----------
-    function scrollToSection(id){
-      const el = document.getElementById(id);
-      if(!el) return;
-      el.scrollIntoView({behavior:'smooth',block:'start'});
-    }
-    document.querySelectorAll('[data-scroll]').forEach(btn => {
-      btn.addEventListener('click', () => scrollToSection(btn.getAttribute('data-scroll')));
-    });
-    document.querySelectorAll('nav a[data-target]').forEach(a => {
-      a.addEventListener('click', e => {
-        e.preventDefault();
-        scrollToSection(a.getAttribute('data-target'));
-      });
-    });
-
-    // ---------- reveal animations ----------
-    const reveals = document.querySelectorAll('.reveal');
-    const revealObserver = new IntersectionObserver((ents, obs) => {
-      ents.forEach(en => {
-        if(en.isIntersecting){ en.target.classList.add('show'); obs.unobserve(en.target); }
-      });
-    }, {threshold:0.12});
-    reveals.forEach(r => revealObserver.observe(r));
-
-    // ---------- scrollspy ----------
-    const navLinks = document.querySelectorAll('nav a[data-target]');
-    const sections = Array.from(navLinks).map(a => document.getElementById(a.getAttribute('data-target')));
-    const spyObserver = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        const id = entry.target.id;
-        const link = document.querySelector('nav a[data-target="'+id+'"]');
-        if(entry.isIntersecting){
-          navLinks.forEach(n => n.classList.remove('active'));
-          if(link) link.classList.add('active');
-        }
-      });
-    }, { root:null, rootMargin:'0px 0px -45% 0px', threshold:0 });
-    sections.forEach(s => { if(s) spyObserver.observe(s); });
-
-    // ---------- back to top ----------
-    const toTop = document.getElementById('toTop');
-    window.addEventListener('scroll', () => {
-      if(window.scrollY > 400) toTop.style.display = 'block'; else toTop.style.display = 'none';
-    });
-    toTop.addEventListener('click', () => window.scrollTo({top:0,behavior:'smooth'}));
-
-    // ---------- WhatsApp form handling ----------
-    const WA_NUMBER = '12398325390'; // +1 (239) 832-5390
-
-    function handleSubmit(e){
-      e.preventDefault();
-      const name = document.getElementById('name').value.trim();
-      const phone = document.getElementById('phone').value.trim();
-      const business = document.getElementById('business').value.trim();
-      const service = document.getElementById('service').value.trim();
-      const message = document.getElementById('message').value.trim();
-      if(!name){
-        alert('Por favor escribe tu nombre / Please enter your name.');
-        return false;
-      }
-      // Compose bilingual message
-      const textLines = [
-        'Nueva consulta / New inquiry:',
-        'Nombre / Name: ' + (name || '-'),
-        'Teléfono / Phone: ' + (phone || '-'),
-        'Tipo negocio / Business type: ' + (business || '-'),
-        'Servicio / Service: ' + (service || '-'),
-        'Detalles / Details: ' + (message || '-'),
-        'Origen: WebSpark (Portafolio)'
-      ];
-      const text = encodeURIComponent(textLines.join('\n'));
-      const url = 'https://wa.me/' + WA_NUMBER + '?text=' + text;
-      window.open(url, '_blank');
-      const formMsg = document.getElementById('formMsg');
-      formMsg.style.display = 'block';
-      formMsg.textContent = (localStorage.getItem('ws_lang') === 'en') ? 'WhatsApp will open with the info. Please review and send.' : 'Se abrirá WhatsApp con la información para que la revises y envíes.';
-      e.target.reset();
-      setTimeout(()=>{ formMsg.style.display = 'none'; }, 9000);
-      return false;
-    }
-
-    document.getElementById('contactForm').addEventListener('submit', handleSubmit);
-
-    // Set initial nav active (optional)
-    document.querySelector('nav a[data-target]').classList.add('active');
-  </script>
+    <script src="script.js"></script>
 </body>
 </html>
